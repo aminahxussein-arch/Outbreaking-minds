@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My First Website</title>
+
+    <style>
+        body {
+            background-color: lightblue;
+            text-align: center;
+            font-family: Arial;
+            padding: 40px 10px;
+        }
+
+        button {
+            background: blue;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Welcome!</h1>
+    <p>This is my first website.</p>
+
+    <button onclick="sayHello()">Tap Me</button>
+
+    <script>
+        function sayHello() {
+            alert("Hello! My website works!");
+        }
+    </script>
+</body>
+</html>
