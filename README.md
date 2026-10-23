@@ -1,2 +1,412 @@
 # Outbreaking-minds
 A learning website with calculations and word problems.
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upcoming Minds</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 20px 12px;
+  font-family: Arial, sans-serif;
+  background: gold;
+  color: #252525;
+  text-align: center;
+}
+
+.screen {
+  max-width: 650px;
+  margin: 20px auto;
+  padding: 24px 16px;
+  background: #fff8d8;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px #0002;
+  animation: appear .35s ease;
+}
+
+h1 { color: #342600; }
+p { line-height: 1.6; }
+
+button {
+  background: red;
+  color: blue;
+  border: none;
+  border-radius: 10px;
+  padding: 13px 17px;
+  margin: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform .15s, filter .15s;
+}
+
+button:active { transform: scale(.96); }
+button:hover { filter: brightness(1.08); }
+
+input, textarea, select {
+  width: 100%;
+  padding: 13px;
+  margin: 7px 0 12px;
+  border: 2px solid #e0c85c;
+  border-radius: 10px;
+  font: inherit;
+  background: white;
+}
+
+textarea { min-height: 90px; resize: vertical; }
+
+label {
+  display: block;
+  text-align: left;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.hidden { display: none; }
+
+.menu {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 18px 0;
+}
+
+.menu button {
+  min-height: 60px;
+  margin: 0;
+}
+
+.result {
+  margin-top: 16px;
+  padding: 16px;
+  background: white;
+  border-radius: 12px;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+.result h3 { margin-top: 0; }
+.correct { color: #14783a; }
+.incorrect { color: #bd2020; }
+
+.small { font-size: 13px; color: #514b38; }
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 360px) {
+  .screen { padding: 16px 10px; }
+  button { font-size: 14px; padding: 12px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- WELCOME PAGE -->
+<section id="welcome" class="screen">
+  <h1>Welcome!</h1>
+  <h2>Welcome to Upcoming Minds</h2>
+  <p>This is a place to learn, think, and solve problems.</p>
+  <p>Learn mathematics step by step and understand your mistakes.</p>
+  <button onclick="openLearning()">Tap Here to Get Started</button>
+</section>
+
+<!-- LEARNING PAGE -->
+<section id="learning" class="screen hidden">
+  <h1>Upcoming Minds</h1>
+  <p>Choose a topic or enter your own question.</p>
+
+  <div class="menu">
+    <button onclick="chooseTopic('addition')">Addition (+)</button>
+    <button onclick="chooseTopic('subtraction')">Subtraction (−)</button>
+    <button onclick="chooseTopic('multiplication')">Multiplication (×)</button>
+    <button onclick="chooseTopic('division')">Division (÷)</button>
+    <button onclick="chooseTopic('word')">Word Problems</button>
+    <button onclick="chooseTopic('check')">Check My Answer</button>
+  </div>
+
+  <div id="workspace" class="hidden">
+    <h2 id="topicTitle">Solve a question</h2>
+
+    <label for="question">Your calculation or word problem</label>
+    <textarea id="question"
+      placeholder="Example: I have two pens and two books. If I take away one book, how many remain?"></textarea>
+
+    <label for="answer">Your answer</label>
+    <input id="answer"
+      placeholder="Enter your answer"
+      autocomplete="off">
+
+    <button onclick="checkAnswer()">Check My Answer</button>
+    <button onclick="clearQuestion()">Clear</button>
+
+    <div id="feedback" class="result hidden" aria-live="polite"></div>
+    <p class="small">
+      This version supports basic arithmetic and selected word-problem patterns.
+    </p>
+  </div>
+
+  <button onclick="goHome()">Back to Welcome Page</button>
+</section>
+
+<script>
+const welcome = document.getElementById("welcome");
+const learning = document.getElementById("learning");
+const workspace = document.getElementById("workspace");
+const questionField = document.getElementById("question");
+const answerField = document.getElementById("answer");
+const feedback = document.getElementById("feedback");
+
+let currentTopic = "check";
+
+function openLearning() {
+  welcome.classList.add("hidden");
+  learning.classList.remove("hidden");
+}
+
+function goHome() {
+  learning.classList.add("hidden");
+  welcome.classList.remove("hidden");
+}
+
+function chooseTopic(topic) {
+  currentTopic = topic;
+  workspace.classList.remove("hidden");
+  feedback.classList.add("hidden");
+  answerField.value = "";
+
+  const titles = {
+    addition: "Addition Practice",
+    subtraction: "Subtraction Practice",
+    multiplication: "Multiplication Practice",
+    division: "Division Practice",
+    word: "Word Problems",
+    check: "Check Your Answer"
+  };
+
+  document.getElementById("topicTitle").textContent = titles[topic];
+
+  const examples = {
+    addition: "Example: 20 + 30",
+    subtraction: "Example: 50 - 20",
+    multiplication: "Example: 6 × 7",
+    division: "Example: 100 ÷ 4",
+    word: "Example: I have two pens and two books. If I take away one book, how many pens and books remain?",
+    check: "Enter a calculation or a supported word problem."
+  };
+
+  questionField.value = "";
+  questionField.placeholder = examples[topic];
+  questionField.focus();
+}
+
+function clearQuestion() {
+  questionField.value = "";
+  answerField.value = "";
+  feedback.classList.add("hidden");
+}
+
+function showFeedback(title, message, good) {
+  feedback.classList.remove("hidden");
+  feedback.replaceChildren();
+
+  const heading = document.createElement("h3");
+  heading.textContent = title;
+  heading.className = good ? "correct" : "incorrect";
+
+  const detail = document.createElement("p");
+  detail.textContent = message;
+
+  feedback.append(heading, detail);
+}
+
+function evaluateExpression(source) {
+  const input = source.replace(/\s/g, "")
+    .replace(/[×x]/gi, "*")
+    .replace(/÷/g, "/");
+
+  if (!input || !/^[0-9.+\-*/()]+$/.test(input)) {
+    throw Error("Please enter a calculation using numbers and +, -, × or ÷.");
+  }
+
+  const tokens = input.match(/\d+(?:\.\d+)?|[()+\-*/]/g);
+  if (!tokens || tokens.join("") !== input) {
+    throw Error("Please check the calculation format.");
+  }
+
+  let i = 0;
+
+  function factor() {
+    const token = tokens[i++];
+
+    if (token === "+") return factor();
+    if (token === "-") return -factor();
+
+    if (token === "(") {
+      const n = sum();
+      if (tokens[i++] !== ")") throw Error("Check your brackets.");
+      return n;
+    }
+
+    const n = Number(token);
+    if (!Number.isFinite(n)) throw Error("Check your numbers.");
+    return n;
+  }
+
+  function product() {
+    let n = factor();
+
+    while (tokens[i] === "*" || tokens[i] === "/") {
+      const op = tokens[i++];
+      const b = factor();
+
+      if (op === "/" && b === 0) {
+        throw Error("You cannot divide by zero.");
+      }
+
+      n = op === "*" ? n * b : n / b;
+    }
+
+    return n;
+  }
+
+  function sum() {
+    let n = product();
+
+    while (tokens[i] === "+" || tokens[i] === "-") {
+      const op = tokens[i++];
+      const b = product();
+      n = op === "+" ? n + b : n - b;
+    }
+
+    return n;
+  }
+
+  const result = sum();
+
+  if (i !== tokens.length || !Number.isFinite(result)) {
+    throw Error("Please check the calculation.");
+  }
+
+  return result;
+}
+
+function normalizeAnswer(text) {
+  return text.toLowerCase().replace(/[.,!?]/g, " ")
+    .replace(/\s+/g, " ").trim();
+}
+
+function checkWordProblem(question, answer) {
+  const q = question.toLowerCase();
+
+  // Recognize the specific pens-and-books example.
+  const pens = q.match(/(\d+)\s+pens?/);
+  const books = q.match(/(\d+)\s+books?/);
+  const removed = q.match(
+    /(?:take away|take|remove|lose|give away)\s+(\d+)\s+books?/
+  );
+
+  if (pens && books && removed) {
+    const p = Number(pens[1]);
+    const b = Number(books[1]);
+    const r = Number(removed[1]);
+
+    if (r > b) {
+      showFeedback("Check the question",
+        "You cannot take away more books than you have.", false);
+      return true;
+    }
+
+    const remainingBooks = b - r;
+    const expected =
+      p + " pens and " + remainingBooks + " " +
+      (remainingBooks === 1 ? "book" : "books");
+
+    const a = normalizeAnswer(answer);
+    const compact = a.replace(/\s/g, "");
+
+    const isCorrect =
+      (a.includes(String(p)) && a.includes(String(remainingBooks)) &&
+       a.includes("pen") && a.includes("book")) ||
+      compact === (p + "pensand" + remainingBooks +
+        (remainingBooks === 1 ? "book" : "books"));
+
+    showFeedback(
+      isCorrect ? "Correct! Your answer is correct." :
+        "This is incorrect. Let's learn.",
+      "Correct answer: " + expected + " remain. " +
+      "You started with " + p + " pens and " + b +
+      " books. No pens were taken away, so " + p +
+      " pens remain. Books remaining: " + b + " - " +
+      r + " = " + remainingBooks + ".",
+      isCorrect
+    );
+
+    return true;
+  }
+
+  return false;
+}
+
+function checkAnswer() {
+  const question = questionField.value.trim();
+  const answer = answerField.value.trim();
+
+  if (!question || !answer) {
+    showFeedback("Missing information",
+      "Enter both the question and your answer.", false);
+    return;
+  }
+
+  // Try supported word problems first.
+  if (checkWordProblem(question, answer)) return;
+
+  // For arithmetic, compare the entered answer with the result.
+  try {
+    const correct = evaluateExpression(question);
+    const given = Number(answer);
+
+    if (!Number.isFinite(given)) {
+      showFeedback("Check your answer",
+        "For a numerical calculation, enter your answer as a number.", false);
+      return;
+    }
+
+    const ok = Math.abs(given - correct) <
+      1e-9 * Math.max(1, Math.abs(correct));
+
+    let explanation = "Correct answer: " + correct + ". ";
+
+    if (ok) {
+      explanation += "Your calculation is correct.";
+    } else {
+      explanation += "Recalculate " + question +
+        " using the correct operation signs. The result is " +
+        correct + ", not " + given + ".";
+    }
+
+    showFeedback(
+      ok ? "Correct! Your answer is correct." :
+        "This is incorrect. Let's correct it.",
+      explanation,
+      ok
+    );
+  } catch (error) {
+    showFeedback("I couldn't check that question",
+      "This version understands basic arithmetic and the included " +
+      "pens-and-books word problem pattern. Try entering a calculation " +
+      "such as 10 + 10, or rephrase the word problem.", false);
+  }
+}
+</script>
+
+</body>
+</html>
