@@ -2,410 +2,475 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Upcoming Minds</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Outbreaking Minds | Learn & Grow</title>
 
-<style>
-* { box-sizing: border-box; }
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-body {
-  margin: 0;
-  padding: 20px 12px;
-  font-family: Arial, sans-serif;
-  background: gold;
-  color: #252525;
-  text-align: center;
-}
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4ff;
+      color: #172554;
+      min-height: 100vh;
+    }
 
-.screen {
-  max-width: 650px;
-  margin: 20px auto;
-  padding: 24px 16px;
-  background: #fff8d8;
-  border-radius: 20px;
-  box-shadow: 0 8px 24px #0002;
-  animation: appear .35s ease;
-}
+    header {
+      background: #4338ca;
+      color: white;
+      text-align: center;
+      padding: 22px 12px;
+    }
 
-h1 { color: #342600; }
-p { line-height: 1.6; }
+    header h1 {
+      font-size: 28px;
+      margin-bottom: 7px;
+    }
 
-button {
-  background: red;
-  color: blue;
-  border: none;
-  border-radius: 10px;
-  padding: 13px 17px;
-  margin: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: transform .15s, filter .15s;
-}
+    header p {
+      font-size: 14px;
+    }
 
-button:active { transform: scale(.96); }
-button:hover { filter: brightness(1.08); }
+    main {
+      max-width: 720px;
+      margin: 25px auto;
+      padding: 15px;
+    }
 
-input, textarea, select {
-  width: 100%;
-  padding: 13px;
-  margin: 7px 0 12px;
-  border: 2px solid #e0c85c;
-  border-radius: 10px;
-  font: inherit;
-  background: white;
-}
+    .welcome, .learning-card {
+      background: white;
+      padding: 28px 20px;
+      border-radius: 18px;
+      box-shadow: 0 5px 20px #00000012;
+      text-align: center;
+    }
 
-textarea { min-height: 90px; resize: vertical; }
+    .welcome h2 {
+      font-size: 27px;
+      margin: 15px 0;
+    }
 
-label {
-  display: block;
-  text-align: left;
-  font-weight: bold;
-  margin-top: 10px;
-}
+    .welcome p {
+      color: #475569;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
 
-.hidden { display: none; }
+    .emoji {
+      font-size: 60px;
+    }
 
-.menu {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-  margin: 18px 0;
-}
+    button {
+      background: #4338ca;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 13px 18px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 5px;
+    }
 
-.menu button {
-  min-height: 60px;
-  margin: 0;
-}
+    button:hover {
+      background: #312e81;
+    }
 
-.result {
-  margin-top: 16px;
-  padding: 16px;
-  background: white;
-  border-radius: 12px;
-  overflow-wrap: anywhere;
-  text-align: left;
-}
+    button:focus-visible, input:focus-visible {
+      outline: 3px solid #f59e0b;
+      outline-offset: 3px;
+    }
 
-.result h3 { margin-top: 0; }
-.correct { color: #14783a; }
-.incorrect { color: #bd2020; }
+    .secondary {
+      background: #e0e7ff;
+      color: #312e81;
+    }
 
-.small { font-size: 13px; color: #514b38; }
+    .secondary:hover {
+      background: #c7d2fe;
+    }
 
-@keyframes appear {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+    .hidden {
+      display: none !important;
+    }
 
-@media (max-width: 360px) {
-  .screen { padding: 16px 10px; }
-  button { font-size: 14px; padding: 12px; }
-}
-</style>
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .tabs button {
+      flex: 1;
+      margin: 0;
+      padding: 12px 5px;
+    }
+
+    .tabs button.active {
+      background: #059669;
+    }
+
+    .score {
+      background: #ecfdf5;
+      color: #065f46;
+      padding: 13px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      font-weight: bold;
+    }
+
+    .learning-card h2 {
+      margin-bottom: 12px;
+    }
+
+    .instructions {
+      color: #64748b;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .question {
+      font-size: 29px;
+      font-weight: bold;
+      margin: 22px 0;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .word-question {
+      font-size: 20px;
+      line-height: 1.7;
+      margin: 20px 0;
+    }
+
+    input {
+      width: 100%;
+      max-width: 300px;
+      padding: 14px;
+      border: 2px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 20px;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .feedback {
+      min-height: 28px;
+      margin: 12px 0;
+      font-weight: bold;
+      line-height: 1.5;
+    }
+
+    .correct {
+      color: #047857;
+    }
+
+    .incorrect {
+      color: #b91c1c;
+    }
+
+    .footer {
+      text-align: center;
+      color: #64748b;
+      font-size: 13px;
+      padding: 20px;
+    }
+
+    @media (max-width: 420px) {
+      header h1 {
+        font-size: 24px;
+      }
+
+      .welcome, .learning-card {
+        padding: 23px 14px;
+      }
+
+      .question {
+        font-size: 25px;
+      }
+
+      .tabs button {
+        font-size: 13px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- WELCOME PAGE -->
-<section id="welcome" class="screen">
-  <h1>Welcome!</h1>
-  <h2>Welcome to Upcoming Minds</h2>
-  <p>This is a place to learn, think, and solve problems.</p>
-  <p>Learn mathematics step by step and understand your mistakes.</p>
-  <button onclick="openLearning()">Tap Here to Get Started</button>
-</section>
+  <header>
+    <h1>🧠 Outbreaking Minds</h1>
+    <p>Think Bigger. Learn Better. Achieve More.</p>
+  </header>
 
-<!-- LEARNING PAGE -->
-<section id="learning" class="screen hidden">
-  <h1>Upcoming Minds</h1>
-  <p>Choose a topic or enter your own question.</p>
+  <main>
 
-  <div class="menu">
-    <button onclick="chooseTopic('addition')">Addition (+)</button>
-    <button onclick="chooseTopic('subtraction')">Subtraction (−)</button>
-    <button onclick="chooseTopic('multiplication')">Multiplication (×)</button>
-    <button onclick="chooseTopic('division')">Division (÷)</button>
-    <button onclick="chooseTopic('word')">Word Problems</button>
-    <button onclick="chooseTopic('check')">Check My Answer</button>
+    <!-- Welcome screen -->
+    <section id="welcome" class="welcome">
+      <div class="emoji">🚀</div>
+      <h2>Welcome to Outbreaking Minds!</h2>
+      <p>
+        Welcome to your learning space. Challenge your mind,
+        practise mathematics, solve real-life problems, and
+        discover what you can achieve.
+      </p>
+      <button onclick="startLearning()">Start Learning</button>
+    </section>
+
+    <!-- Learning area -->
+    <section id="learning" class="hidden">
+
+      <div class="score">
+        🏆 Correct answers: <span id="score">0</span>
+      </div>
+
+      <div class="tabs">
+        <button id="mathTab" class="active"
+          onclick="changeMode('math')">
+          Arithmetic
+        </button>
+
+        <button id="wordTab" class="secondary"
+          onclick="changeMode('word')">
+          Word Problems
+        </button>
+      </div>
+
+      <div class="learning-card">
+        <h2 id="sectionTitle">Arithmetic Practice</h2>
+        <p class="instructions" id="instructions">
+          Solve the question and enter your answer below.
+        </p>
+
+        <div id="question" class="question"></div>
+
+        <input
+          id="answer"
+          type="number"
+          step="any"
+          inputmode="decimal"
+          placeholder="Your answer"
+          aria-label="Your answer"
+        >
+
+        <br>
+
+        <button id="checkButton" onclick="checkAnswer()">
+          Check Answer
+        </button>
+
+        <div id="feedback" class="feedback"
+          role="status" aria-live="polite"></div>
+
+        <button class="secondary" onclick="nextQuestion()">
+          Next Question →
+        </button>
+
+        <br><br>
+
+        <button class="secondary" onclick="goHome()">
+          ← Back to Welcome
+        </button>
+      </div>
+
+    </section>
+  </main>
+
+  <div class="footer">
+    © 2026 Outbreaking Minds | Keep Learning, Keep Growing.
   </div>
 
-  <div id="workspace" class="hidden">
-    <h2 id="topicTitle">Solve a question</h2>
+  <script>
+    let mode = "math";
+    let correctAnswer = 0;
+    let score = 0;
+    let answered = false;
+    let wordIndex = -1;
 
-    <label for="question">Your calculation or word problem</label>
-    <textarea id="question"
-      placeholder="Example: I have two pens and two books. If I take away one book, how many remain?"></textarea>
+    const wordProblems = [
+      {
+        question: "Amina has 24 books. She buys 18 more books. How many books does she have altogether?",
+        answer: 42
+      },
+      {
+        question: "A shop has 75 pencils and sells 28 of them. How many pencils remain?",
+        answer: 47
+      },
+      {
+        question: "There are 8 boxes, each containing 6 oranges. How many oranges are there in total?",
+        answer: 48
+      },
+      {
+        question: "A teacher shares 96 exercise books equally among 12 learners. How many books does each learner receive?",
+        answer: 8
+      },
+      {
+        question: "A bus carries 35 passengers. At the next stop, 12 get off and 9 get on. How many passengers are now on the bus?",
+        answer: 32
+      },
+      {
+        question: "One notebook costs 45 shillings. What is the cost of 4 notebooks?",
+        answer: 180
+      },
+      {
+        question: "A farmer collects 120 eggs and packs them equally into 10 trays. How many eggs go into each tray?",
+        answer: 12
+      },
+      {
+        question: "A student reads 15 pages each day for 7 days. How many pages does the student read?",
+        answer: 105
+      }
+    ];
 
-    <label for="answer">Your answer</label>
-    <input id="answer"
-      placeholder="Enter your answer"
-      autocomplete="off">
-
-    <button onclick="checkAnswer()">Check My Answer</button>
-    <button onclick="clearQuestion()">Clear</button>
-
-    <div id="feedback" class="result hidden" aria-live="polite"></div>
-    <p class="small">
-      This version supports basic arithmetic and selected word-problem patterns.
-    </p>
-  </div>
-
-  <button onclick="goHome()">Back to Welcome Page</button>
-</section>
-
-<script>
-const welcome = document.getElementById("welcome");
-const learning = document.getElementById("learning");
-const workspace = document.getElementById("workspace");
-const questionField = document.getElementById("question");
-const answerField = document.getElementById("answer");
-const feedback = document.getElementById("feedback");
-
-let currentTopic = "check";
-
-function openLearning() {
-  welcome.classList.add("hidden");
-  learning.classList.remove("hidden");
-}
-
-function goHome() {
-  learning.classList.add("hidden");
-  welcome.classList.remove("hidden");
-}
-
-function chooseTopic(topic) {
-  currentTopic = topic;
-  workspace.classList.remove("hidden");
-  feedback.classList.add("hidden");
-  answerField.value = "";
-
-  const titles = {
-    addition: "Addition Practice",
-    subtraction: "Subtraction Practice",
-    multiplication: "Multiplication Practice",
-    division: "Division Practice",
-    word: "Word Problems",
-    check: "Check Your Answer"
-  };
-
-  document.getElementById("topicTitle").textContent = titles[topic];
-
-  const examples = {
-    addition: "Example: 20 + 30",
-    subtraction: "Example: 50 - 20",
-    multiplication: "Example: 6 × 7",
-    division: "Example: 100 ÷ 4",
-    word: "Example: I have two pens and two books. If I take away one book, how many pens and books remain?",
-    check: "Enter a calculation or a supported word problem."
-  };
-
-  questionField.value = "";
-  questionField.placeholder = examples[topic];
-  questionField.focus();
-}
-
-function clearQuestion() {
-  questionField.value = "";
-  answerField.value = "";
-  feedback.classList.add("hidden");
-}
-
-function showFeedback(title, message, good) {
-  feedback.classList.remove("hidden");
-  feedback.replaceChildren();
-
-  const heading = document.createElement("h3");
-  heading.textContent = title;
-  heading.className = good ? "correct" : "incorrect";
-
-  const detail = document.createElement("p");
-  detail.textContent = message;
-
-  feedback.append(heading, detail);
-}
-
-function evaluateExpression(source) {
-  const input = source.replace(/\s/g, "")
-    .replace(/[×x]/gi, "*")
-    .replace(/÷/g, "/");
-
-  if (!input || !/^[0-9.+\-*/()]+$/.test(input)) {
-    throw Error("Please enter a calculation using numbers and +, -, × or ÷.");
-  }
-
-  const tokens = input.match(/\d+(?:\.\d+)?|[()+\-*/]/g);
-  if (!tokens || tokens.join("") !== input) {
-    throw Error("Please check the calculation format.");
-  }
-
-  let i = 0;
-
-  function factor() {
-    const token = tokens[i++];
-
-    if (token === "+") return factor();
-    if (token === "-") return -factor();
-
-    if (token === "(") {
-      const n = sum();
-      if (tokens[i++] !== ")") throw Error("Check your brackets.");
-      return n;
+    function startLearning() {
+      document.getElementById("welcome").classList.add("hidden");
+      document.getElementById("learning").classList.remove("hidden");
+      changeMode("math");
     }
 
-    const n = Number(token);
-    if (!Number.isFinite(n)) throw Error("Check your numbers.");
-    return n;
-  }
+    function goHome() {
+      document.getElementById("learning").classList.add("hidden");
+      document.getElementById("welcome").classList.remove("hidden");
+    }
 
-  function product() {
-    let n = factor();
+    function changeMode(newMode) {
+      mode = newMode;
 
-    while (tokens[i] === "*" || tokens[i] === "/") {
-      const op = tokens[i++];
-      const b = factor();
+      document.getElementById("mathTab").className =
+        mode === "math" ? "active" : "secondary";
 
-      if (op === "/" && b === 0) {
-        throw Error("You cannot divide by zero.");
+      document.getElementById("wordTab").className =
+        mode === "word" ? "active" : "secondary";
+
+      document.getElementById("sectionTitle").textContent =
+        mode === "math" ? "Arithmetic Practice" : "Word Problems";
+
+      document.getElementById("instructions").textContent =
+        mode === "math"
+          ? "Solve the calculation and enter your answer."
+          : "Read the problem carefully and calculate the answer.";
+
+      nextQuestion();
+    }
+
+    function nextQuestion() {
+      answered = false;
+
+      document.getElementById("answer").value = "";
+      document.getElementById("feedback").textContent = "";
+      document.getElementById("feedback").className = "feedback";
+      document.getElementById("checkButton").disabled = false;
+      document.getElementById("answer").disabled = false;
+
+      if (mode === "math") {
+        makeMathQuestion();
+      } else {
+        makeWordQuestion();
       }
 
-      n = op === "*" ? n * b : n / b;
+      document.getElementById("answer").focus();
     }
 
-    return n;
-  }
+    function makeMathQuestion() {
+      const operations = ["+", "−", "×", "÷"];
+      const operation =
+        operations[Math.floor(Math.random() * operations.length)];
 
-  function sum() {
-    let n = product();
+      let a, b, display;
 
-    while (tokens[i] === "+" || tokens[i] === "-") {
-      const op = tokens[i++];
-      const b = product();
-      n = op === "+" ? n + b : n - b;
+      if (operation === "+") {
+        a = randomNumber(1, 100);
+        b = randomNumber(1, 100);
+        correctAnswer = a + b;
+        display = a + " + " + b;
+      } else if (operation === "−") {
+        a = randomNumber(1, 100);
+        b = randomNumber(1, a);
+        correctAnswer = a - b;
+        display = a + " − " + b;
+      } else if (operation === "×") {
+        a = randomNumber(2, 12);
+        b = randomNumber(2, 12);
+        correctAnswer = a * b;
+        display = a + " × " + b;
+      } else {
+        b = randomNumber(2, 12);
+        correctAnswer = randomNumber(2, 12);
+        a = b * correctAnswer;
+        display = a + " ÷ " + b;
+      }
+
+      document.getElementById("question").textContent = display + " = ?";
     }
 
-    return n;
-  }
+    function makeWordQuestion() {
+      wordIndex = (wordIndex + 1) % wordProblems.length;
 
-  const result = sum();
+      const problem = wordProblems[wordIndex];
+      correctAnswer = problem.answer;
 
-  if (i !== tokens.length || !Number.isFinite(result)) {
-    throw Error("Please check the calculation.");
-  }
-
-  return result;
-}
-
-function normalizeAnswer(text) {
-  return text.toLowerCase().replace(/[.,!?]/g, " ")
-    .replace(/\s+/g, " ").trim();
-}
-
-function checkWordProblem(question, answer) {
-  const q = question.toLowerCase();
-
-  // Recognize the specific pens-and-books example.
-  const pens = q.match(/(\d+)\s+pens?/);
-  const books = q.match(/(\d+)\s+books?/);
-  const removed = q.match(
-    /(?:take away|take|remove|lose|give away)\s+(\d+)\s+books?/
-  );
-
-  if (pens && books && removed) {
-    const p = Number(pens[1]);
-    const b = Number(books[1]);
-    const r = Number(removed[1]);
-
-    if (r > b) {
-      showFeedback("Check the question",
-        "You cannot take away more books than you have.", false);
-      return true;
+      document.getElementById("question").className = "word-question";
+      document.getElementById("question").textContent = problem.question;
     }
 
-    const remainingBooks = b - r;
-    const expected =
-      p + " pens and " + remainingBooks + " " +
-      (remainingBooks === 1 ? "book" : "books");
-
-    const a = normalizeAnswer(answer);
-    const compact = a.replace(/\s/g, "");
-
-    const isCorrect =
-      (a.includes(String(p)) && a.includes(String(remainingBooks)) &&
-       a.includes("pen") && a.includes("book")) ||
-      compact === (p + "pensand" + remainingBooks +
-        (remainingBooks === 1 ? "book" : "books"));
-
-    showFeedback(
-      isCorrect ? "Correct! Your answer is correct." :
-        "This is incorrect. Let's learn.",
-      "Correct answer: " + expected + " remain. " +
-      "You started with " + p + " pens and " + b +
-      " books. No pens were taken away, so " + p +
-      " pens remain. Books remaining: " + b + " - " +
-      r + " = " + remainingBooks + ".",
-      isCorrect
-    );
-
-    return true;
-  }
-
-  return false;
-}
-
-function checkAnswer() {
-  const question = questionField.value.trim();
-  const answer = answerField.value.trim();
-
-  if (!question || !answer) {
-    showFeedback("Missing information",
-      "Enter both the question and your answer.", false);
-    return;
-  }
-
-  // Try supported word problems first.
-  if (checkWordProblem(question, answer)) return;
-
-  // For arithmetic, compare the entered answer with the result.
-  try {
-    const correct = evaluateExpression(question);
-    const given = Number(answer);
-
-    if (!Number.isFinite(given)) {
-      showFeedback("Check your answer",
-        "For a numerical calculation, enter your answer as a number.", false);
-      return;
+    function randomNumber(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    const ok = Math.abs(given - correct) <
-      1e-9 * Math.max(1, Math.abs(correct));
+    function checkAnswer() {
+      if (answered) return;
 
-    let explanation = "Correct answer: " + correct + ". ";
+      const input = document.getElementById("answer");
+      const feedback = document.getElementById("feedback");
 
-    if (ok) {
-      explanation += "Your calculation is correct.";
-    } else {
-      explanation += "Recalculate " + question +
-        " using the correct operation signs. The result is " +
-        correct + ", not " + given + ".";
+      if (input.value.trim() === "") {
+        feedback.textContent = "Please enter an answer first.";
+        feedback.className = "feedback incorrect";
+        input.focus();
+        return;
+      }
+
+      const userAnswer = Number(input.value);
+
+      if (!Number.isFinite(userAnswer)) {
+        feedback.textContent = "Please enter a valid number.";
+        feedback.className = "feedback incorrect";
+        return;
+      }
+
+      answered = true;
+
+      if (Math.abs(userAnswer - correctAnswer) < 0.000001) {
+        score++;
+        document.getElementById("score").textContent = score;
+
+        feedback.textContent = "Correct! Excellent work! 🎉";
+        feedback.className = "feedback correct";
+      } else {
+        feedback.textContent =
+          "Not quite. The correct answer is " + correctAnswer + ". Try the next question!";
+        feedback.className = "feedback incorrect";
+      }
+
+      document.getElementById("checkButton").disabled = true;
+      input.disabled = true;
     }
 
-    showFeedback(
-      ok ? "Correct! Your answer is correct." :
-        "This is incorrect. Let's correct it.",
-      explanation,
-      ok
-    );
-  } catch (error) {
-    showFeedback("I couldn't check that question",
-      "This version understands basic arithmetic and the included " +
-      "pens-and-books word problem pattern. Try entering a calculation " +
-      "such as 10 + 10, or rephrase the word problem.", false);
-  }
-}
-</script>
+    document.getElementById("answer").addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        if (answered) {
+          nextQuestion();
+        } else {
+          checkAnswer();
+        }
+      }
+    });
+  </script>
 
 </body>
 </html>
-<!-- Website update -->
